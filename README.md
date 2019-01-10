@@ -1,1 +1,0 @@
-# reactnd-native-udacifitness
