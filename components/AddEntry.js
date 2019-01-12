@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import { getMetricMetaInfo } from '../utils/helpers'
-import UdaciSlider from './UdaciSlider'
-import UdaciSteppers from './UdaciSteppers'
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { getMetricMetaInfo } from '../utils/helpers';
+import UdaciSlider from './UdaciSlider';
+import UdaciSteppers from './UdaciSteppers';
+import DateHeader from './DateHeader';
 
 export default class AddEntry extends Component {
-
   state = {
     run: 0,
     bike: 0,
@@ -15,33 +15,33 @@ export default class AddEntry extends Component {
   }
 
   increment = (metric) => {
-    const { max, step } = getMetricMetaInfo(metric)
+    const { max, step } = getMetricMetaInfo(metric);
 
     this.setState((state) => {
-      const count = state[metric] + step
+      const count = state[metric] + step;
 
       return {
         ...state,
         [metric]: count > max ? max : count,
-      }
-    })
+      };
+    });
   }
 
   decrement = (metric) => {
     this.setState((state) => {
-      const count = state[metric] - getMetricMetaInfo(metric).step
+      const count = state[metric] - getMetricMetaInfo(metric).step;
 
       return {
         ...state,
         [metric]: count < 0 ? 0 : count,
-      }
-    })
+      };
+    });
   }
 
   slide = (metric, value) => {
     this.setState(() => ({
-      [metric]: value
-    }))
+      [metric]: value,
+    }));
   }
 
   render() {
@@ -49,6 +49,7 @@ export default class AddEntry extends Component {
 
     return (
       <View>
+        <DateHeader date={(new Date()).toLocaleDateString()} />
         {Object.keys(metaInfo).map((key) => {
           const { getIcon, type, ...rest } = metaInfo[key];
           const value = this.state[key];
@@ -57,21 +58,25 @@ export default class AddEntry extends Component {
             <View key={key}>
               {getIcon()}
               {type === 'slider'
-                ? <UdaciSlider
+                ? (
+                  <UdaciSlider
                     value={value}
-                    onChange={(value) => this.slide(key, value)}
+                    onChange={value => this.slide(key, value)}
                     {...rest}
                   />
-                : <UdaciSteppers
+                )
+                : (
+                  <UdaciSteppers
                     value={value}
                     onIncrement={() => this.increment(key)}
                     onDecrement={() => this.decrement(key)}
                     {...rest}
-                  />}
+                  />
+                )}
             </View>
-          )
+          );
         })}
       </View>
-    )
+    );
   }
 }
