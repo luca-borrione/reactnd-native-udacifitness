@@ -6,4 +6,4 @@ npm-debug.*
 *.key
 *.mobileprovision
 .history/
-
+package-lock.json
